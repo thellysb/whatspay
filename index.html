@@ -117,3 +117,235 @@
             animation: pulsar 1s infinite; /* Animação de pulsar */
             margin-top: 10px; /* Espaçamento */
         }
+        .botaoCopiar {
+            background-color: #28a745; /* Verde */
+            color: white;
+            border: none;
+            border-radius: 2px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .botaoCopiar:hover {
+            background-color: #218838; /* Cor mais escura ao passar o mouse */
+        }
+        /* Pop-up de carregamento */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden; /* Inicialmente escondido */
+            z-index: 1000; /* Fica acima de outros elementos */
+            text-align: center; /* Centraliza o texto do carregamento */
+        }
+        .spinner {
+            border: 8px solid rgba(255, 255, 255, 0.3);
+            border-top: 8px solid #ffffff;
+            border-radius: 50%;
+            width: 40px; /* Tamanho do spinner */
+            height: 40px; /* Tamanho do spinner */
+            animation: spin 1s linear infinite; /* Animação do spinner */
+            margin-right: 10px; /* Espaço entre o spinner e o texto */
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="profile">
+        
+        </div>
+        <div class="logo">
+            <img src="https://i.postimg.cc/W4vfqs5G/whatsapp-33.png" alt="Logo">
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="valor-title">Whatsapp Pay</h1>
+        <p class="info-text">Realize o pagamento via PIX de forma rápida e segura.</p>
+        
+        <label for="valorInput">Valor:</label>
+        <input type="text" id="valorInput" placeholder="Digite o Valor" style="width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        
+        <button id="gerarPixBtn">Gerar Pix</button>
+        
+        <div id="mensagem"></div>
+        <div id="qrCodeContainer"></div>
+        
+        <div class="codigo-container" id="codigoPix">
+            <span><strong></strong></span>
+        </div>
+
+        <div id="statusPagamento"></div>
+        <div id="verificado"></div> <!-- Div para verificar pagamento -->
+    </div>
+
+    <!-- Pop-up de carregamento -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="spinner"></div>
+        <h2>Carregando... Aguarde enquanto confirmamos seu pagamento.</h2>
+    </div>
+
+    <script>
+        const enviarMensagem = (mensagem) => {
+            const mensagemDiv = document.getElementById('mensagem');
+            mensagemDiv.innerHTML += `<p>${mensagem}</p>`;
+        };
+
+        const formatarValor = (valor) => {
+            return valor.replace(',', '.').replace(/[^\d.]/g, '');
+        };
+
+        const gerarPix = async () => {
+            let valor = formatarValor(document.getElementById('valorInput').value);
+            valor = parseFloat(valor);
+
+            if (isNaN(valor) || valor <= 0) {
+                enviarMensagem("Por favor, insira um valor válido.");
+                return;
+            }
+
+            const valorEmCentavos = Math.round(valor * 100);
+
+            const response = await fetch("https://api.pushinpay.com.br/api/pix/cashIn", {
+                method: "POST",
+                headers: {
+                    "Authorization": "Bearer 22753|pPN7WD8FpR1OWe1tSfBxWL3twjz3GwQOi5Tvmbme6925d1e2",
+                    "Accept": "application/json",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    "value": valorEmCentavos,
+                    "webhook_url": "http://seuservico.com/webhook"
+                })
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                apresentarQRCode(data.qr_code_base64);
+                apresentarCodigoCopiaCola(data.qr_code);
+                verificarPagamento(data.id);
+            } else {
+                enviarMensagem("Erro ao gerar PIX: " + response.statusText);
+            }
+        };
+
+        const apresentarQRCode = (qrCodeBase64) => {
+            const imgQrCode = document.createElement("img");
+            imgQrCode.src = qrCodeBase64;
+            imgQrCode.style.maxWidth = "150px"; // Tamanho ajustado para 150px
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            qrCodeContainer.innerHTML = "";
+            qrCodeContainer.appendChild(imgQrCode);
+        };
+
+        const apresentarCodigoCopiaCola = (codigo) => {
+            const codigoDiv = document.getElementById('codigoPix');
+            codigoDiv.querySelector("strong").innerText = codigo; // Adiciona o código ao bloco
+
+            // Remove o botão de copiar anterior, se existir
+            const botaoExistente = codigoDiv.querySelector(".botaoCopiar");
+            if (botaoExistente) {
+                botaoExistente.remove();
+            }
+
+            // Adiciona o botão de copiar código
+            const botaoCopiar = document.createElement("button");
+            botaoCopiar.className = "botaoCopiar";
+            botaoCopiar.innerText = "Copiar Código";
+            botaoCopiar.onclick = () => {
+                copiarCodigo(codigo);
+            };
+            codigoDiv.appendChild(botaoCopiar);
+        };
+
+        const copiarCodigo = async (codigo) => {
+            await navigator.clipboard.writeText(codigo);
+            enviarMensagem("PUSHIN PAY – Código copiado com sucesso!");
+
+            // Mostra o pop-up de carregamento
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.style.visibility = 'visible';
+
+            // Espera o pagamento ser confirmado e esconde o pop-up
+            verificarPagamento(codigo);
+        };
+
+        const verificarPagamento = (idTransacao) => {
+            const statusDiv = document.getElementById('statusPagamento');
+            statusDiv.innerHTML = "Aguardando pagamento...";
+
+            const intervalId = setInterval(async () => {
+                const response = await fetch(`https://api.pushinpay.com.br/api/transactions/${idTransacao}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer 17795|RQ3ZvjijonWrRsxwmflUI5zmJOgZXjf0hGPyURPT9da8f3ac",
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+
+                    if (data.status === "paid") {
+                        const qrCodeContainer = document.getElementById('qrCodeContainer');
+                        const mensagemDiv = document.getElementById('mensagem');
+
+                        // Remove todas as informações de pagamento
+                        qrCodeContainer.innerHTML = "";
+                        mensagemDiv.innerHTML = "";
+
+                        // Exibe a mensagem de pagamento aprovado
+                        statusDiv.innerHTML = "Pagamento aprovado!";
+                        const verificadoDiv = document.getElementById('verificado');
+                        verificadoDiv.innerHTML = '<img src="https://i.postimg.cc/pdYrVCBT/canva.png" alt="Pagamento Verificado" style="max-width: 150px;"/>';
+
+                        // Limpa o código do Pix e o botão de copiar
+                        const codigoDiv = document.getElementById('codigoPix');
+                        codigoDiv.querySelector("strong").innerText = ""; // Limpa o código
+                        const botaoCopiar = codigoDiv.querySelector(".botaoCopiar");
+                        if (botaoCopiar) {
+                            botaoCopiar.remove(); // Remove o botão de copiar
+                        }
+
+                        // Adiciona o botão de "Acesso Liberado"
+                        const botaoLiberado = document.createElement("button");
+                        botaoLiberado.className = "botaoLiberado";
+                        botaoLiberado.innerText = "Acesso Liberado";
+                        botaoLiberado.onclick = () => {
+                            window.location.href = "https://api.whatsapp.com/send/"; // Substitua pelo link do produto
+                        };
+                        verificadoDiv.appendChild(botaoLiberado);
+
+                        // Esconde o pop-up de carregamento
+                        const loadingOverlay = document.getElementById('loadingOverlay');
+                        loadingOverlay.style.visibility = 'hidden';
+
+                        clearInterval(intervalId);
+                    }
+                } else {
+                    enviarMensagem("Erro ao verificar pagamento: " + response.statusText);
+                    clearInterval(intervalId);
+                }
+            }, 5000);
+        };
+
+        document.getElementById('gerarPixBtn').onclick = gerarPix;
+    </script>
+
+</body>
+</html>
