@@ -271,6 +271,7 @@
 
                 if (response.ok) {
                     const data = await response.json();
+                    console.log("String Base64 do QR Code da API:", data.qr_code_base64); // MUITO IMPORTANTE PARA DEPURAR!
                     apresentarQRCode(data.qr_code_base64);
                     apresentarCodigoCopiaCola(data.qr_code);
                     verificarPagamento(data.id); // Inicia a verificação de pagamento
@@ -285,8 +286,15 @@
 
         const apresentarQRCode = (qrCodeBase64) => {
             const imgQrCode = document.createElement("img");
-            // CORREÇÃO: Adicionado o prefixo data URI para o navegador interpretar a base64 como imagem
-            imgQrCode.src = `data:image/png;base64,${qrCodeBase64}`; 
+            
+            // VERIFICA SE A STRING BASE64 JÁ CONTÉM O PREFIXO
+            // Se sim, usa como está. Se não, assume que é PNG e adiciona o prefixo.
+            if (qrCodeBase64.startsWith("data:image/")) {
+                imgQrCode.src = qrCodeBase64;
+            } else {
+                imgQrCode.src = `data:image/png;base64,${qrCodeBase64}`; 
+            }
+            
             imgQrCode.alt = "QR Code Pix";
             imgQrCode.style.maxWidth = "150px"; // Tamanho ajustado para 150px
             const qrCodeContainer = document.getElementById('qrCodeContainer');
