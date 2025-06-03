@@ -285,9 +285,10 @@
 
         const apresentarQRCode = (qrCodeBase64) => {
             const imgQrCode = document.createElement("img");
-            // Adicionado o prefixo data URI para o navegador interpretar a base64 como imagem
+            // CORREÇÃO: Adicionado o prefixo data URI para o navegador interpretar a base64 como imagem
             imgQrCode.src = `data:image/png;base64,${qrCodeBase64}`; 
             imgQrCode.alt = "QR Code Pix";
+            imgQrCode.style.maxWidth = "150px"; // Tamanho ajustado para 150px
             const qrCodeContainer = document.getElementById('qrCodeContainer');
             qrCodeContainer.innerHTML = "";
             qrCodeContainer.appendChild(imgQrCode);
