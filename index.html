@@ -1,439 +1,387 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pix Rápido, Seguro e Sem Complicação</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #000000; /* Fundo preto */
-        }
-        .header {
-            display: flex;
-            align-items: center; /* Alinha itens verticalmente */
-            justify-content: space-between; /* Espaço entre os itens */
-            padding: 10px 20px; /* Mais padding para os lados */
-            background-color: #007BFF; /* Azul da barra */
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-        .profile {
-            display: flex;
-            align-items: center;
-        }
-        .profile img {
-            border-radius: 50%; /* Faz a imagem ser circular */
-            width: 50px; /* Tamanho da imagem */
-            height: 50px; /* Tamanho da imagem */
-            margin-right: 10px; /* Espaçamento à direita da imagem */
-        }
-        .profile-text {
-            color: #ffffff; /* Texto branco */
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .logo {
-            flex-grow: 1; /* Permite que ocupe o espaço */
-            text-align: right; /* Alinha o logo à direita */
-        }
-        .logo img {
-            height: 35px; /* Tamanho da logo ajustado */
-            margin-left: 10px; /* Espaçamento */
-            vertical-align: middle;
-        }
-        h1 {
-            color: #ffffff; /* Texto branco para o nome do usuário */
-            margin: 0; /* Remove margem padrão */
-        }
-        .valor-title {
-            color: #000000; /* Texto preto para "Digite o Valor abaixo! ofc" */
-            margin: 0;
-            margin-top: 20px; /* Espaço acima do título */
-            text-align: left; /* Alinhado à esquerda como na imagem */
-            font-size: 28px; /* Tamanho maior */
-            font-weight: 800; /* Mais negrito */
-        }
-        .info-text {
-            font-size: 20px; /* Tamanho da fonte reduzido */
-            color: #000000; /* Texto preto */
-            text-align: center; /* Centraliza o texto */
-            margin-top: 10px; /* Espaço acima do texto */
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            padding: 20px;
-            background-color: #ffffff; /* Fundo branco para o container */
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-        }
-        .codigo-container {
-            margin-top: 20px;
-            padding: 8px;
-            background-color: #f8f9fa; /* Cor de fundo clara para o bloco */
-            border: 1px solid #ccc; /* Borda cinza */
-            border-radius: 5px; /* Bordas arredondadas */
-            text-align: center; /* Centraliza o texto */
-            word-wrap: break-word; /* Quebra palavras longas */
-            overflow-wrap: break-word; /* Quebra palavras longas */
-            max-width: 100%; /* Garante que o bloco não ultrapasse o container */
-        }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 10px;
-            display: block;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        button {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-        #mensagem {
-            margin-top: 20px;
-            color: #333; /* Ajustado para preto para melhor leitura no container branco */
-            text-align: center;
-        }
-        #statusPagamento {
-            font-weight: bold;
-            color: #28a745;  /* Verde */
-            margin-top: 20px;
-            text-align: center;
-        }
-        #codigoPix {
-            margin-top: 20px;
-            font-size: 14px; /* Tamanho da fonte ajustado para o código do Pix */
-            color: #333; /* Texto escuro */
-        }
-        #qrCodeContainer {
-            text-align: center;
-            margin-top: 20px;
-        }
-        #qrCodeContainer img {
-            max-width: 150px; /* Garante que a imagem do QR Code tenha esse tamanho */
-            display: inline-block; /* Para centralizar melhor */
-        }
-        #verificado {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .botaoLiberado {
-            background-color: #28a745; /* Verde */
-            color: white;
-            animation: pulsar 1s infinite; /* Animação de pulsar */
-            margin-top: 10px; /* Espaçamento */
-        }
-        .botaoCopiar {
-            background-color: #28a745; /* Verde */
-            color: white;
-            border: none;
-            border-radius: 5px; /* Bordas arredondadas para o botão de copiar */
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            margin-top: 10px;
-            padding: 10px;
-        }
-        .botaoCopiar:hover {
-            background-color: #218838; /* Cor mais escura ao passar o mouse */
-        }
-
-        /* Estilos adicionais para o Processo de Pagamento */
-        .processo-titulo {
-            color: #007BFF;
-            text-align: center;
-            font-size: 20px;
-            margin-top: 20px;
-            font-weight: bold;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pix Rápido, Seguro e Sem Complicação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000000; /* Fundo preto */
         }
-
-        .etapas-pix {
+        .header {
             display: flex;
-            justify-content: space-around;
+            align-items: center; /* Alinha itens verticalmente */
+            justify-content: space-between; /* Espaço entre os itens */
+            padding: 10px;
+            background-color: #007BFF; /* Azul da barra */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        .profile {
+            display: flex;
+            align-items: center; /* Alinha a imagem e o texto verticalmente */
+        }
+        .profile img {
+            border-radius: 50%; /* Faz a imagem ser circular */
+            width: 50px; /* Tamanho da imagem */
+            height: 50px; /* Tamanho da imagem */
+            margin-right: 10px; /* Espaçamento à direita da imagem */
+        }
+        .logo {
+            flex: 1; /* Faz a logo ocupar o espaço restante */
+            text-align: center; /* Centraliza a logo */
+        }
+        .logo img {
+            height: 50px; /* Tamanho da logo */
+        }
+        h1 {
+            color: #ffffff; /* Texto branco para o nome do usuário */
+            margin: 0; /* Remove margem padrão */
+        }
+        .valor-title {
+            color: #000000; /* Texto preto para "Digite o Valor abaixo! ofc" */
+            margin: 0;
+            margin-top: 20px; /* Espaço acima do título */
+            text-align: center; /* Centraliza o texto */
+        }
+        .info-text {
+            font-size: 20px; /* Tamanho da fonte reduzido */
+            color: #000000; /* Texto preto */
+            text-align: center; /* Centraliza o texto */
+            margin-top: 10px; /* Espaço acima do texto */
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            background-color: #ffffff; /* Fundo branco para o container */
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+        .codigo-container {
             margin-top: 20px;
-            margin-bottom: 20px;
+            padding: 8px;
+            background-color: #f8f9fa; /* Cor de fundo clara para o bloco */
+            border: 1px solid #ccc; /* Borda cinza */
+            border-radius: 5px; /* Bordas arredondadas */
+            text-align: center; /* Centraliza o texto */
+            word-wrap: break-word; /* Quebra palavras longas */
+            overflow-wrap: break-word; /* Quebra palavras longas */
+            max-width: 100%; /* Garante que o bloco não ultrapasse o container */
         }
-
-        .etapa {
-            text-align: center;
-            font-size: 14px;
-            color: #555;
-            flex: 1;
-            padding: 5px;
-            border-radius: 5px;
-            background-color: #f0f8ff;
-            margin: 0 5px;
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 10px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
-
-        .etapa-circulo {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            line-height: 20px;
-            border-radius: 50%;
+        button {
+            margin-top: 10px;
+            padding: 10px;
             background-color: #007BFF;
             color: white;
-            font-weight: bold;
-            margin-bottom: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
         }
-    </style>
+        button:hover {
+            background-color: #0056b3;
+        }
+        #mensagem {
+            margin-top: 20px;
+            color: #333; /* Ajustado para preto para melhor leitura no container branco */
+            text-align: center;
+        }
+        #statusPagamento {
+            font-weight: bold;
+            color: #28a745;  /* Verde */
+            margin-top: 20px;
+            text-align: center;
+        }
+        #codigoPix {
+            margin-top: 20px;
+            font-size: 14px; /* Tamanho da fonte ajustado para o código do Pix */
+            color: #333; /* Texto escuro */
+        }
+        #qrCodeContainer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        #qrCodeContainer img {
+            max-width: 150px; /* Garante que a imagem do QR Code tenha esse tamanho */
+            display: inline-block; /* Para centralizar melhor */
+        }
+        #verificado {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .botaoLiberado {
+            background-color: #28a745; /* Verde */
+            color: white;
+            animation: pulsar 1s infinite; /* Animação de pulsar */
+            margin-top: 10px; /* Espaçamento */
+        }
+        .botaoCopiar {
+            background-color: #28a745; /* Verde */
+            color: white;
+            border: none;
+            border-radius: 5px; /* Bordas arredondadas para o botão de copiar */
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        .botaoCopiar:hover {
+            background-color: #218838; /* Cor mais escura ao passar o mouse */
+        }
+        /* Removido o estilo do pop-up de carregamento pois a funcionalidade será desativada */
+    </style>
 </head>
 <body>
 
-    <div class="header">
-        <div class="profile">
-            <span class="profile-text">Olá, Usuário!</span>
-        </div>
-        <div class="logo">
-            <img src="https://i.postimg.cc/W4vfqs5G/whatsapp-33.png" alt="Logo WhatsApp Pay">
-        </div>
-    </div>
-
-    <div class="container">
-        <h1 class="valor-title">Whatsapp Pay</h1>
-
-        <p class="processo-titulo">⚡️ Processo de Pagamento Pix (Rápido)</p>
-
-        <div class="etapas-pix">
-            <div class="etapa">
-                <div class="etapa-circulo">1</div>
-                <div>Digite o Valor:</div>
+    <div class="header">
+        <div class="profile">
             </div>
-            <div class="etapa">
-                <div class="etapa-circulo">2</div>
-                <div>Copiar ou Ler:</div>
-            </div>
-            <div class="etapa">
-                <div class="etapa-circulo">3</div>
-                <div>Pagar e Acessar:</div>
-            </div>
+        <div class="logo">
+            <img src="https://i.postimg.cc/W4vfqs5G/whatsapp-33.png" alt="Logo">
         </div>
-        
-        <label for="valorInput">Valor:</label>
-        <input type="text" id="valorInput" placeholder="Digite o Valor" style="width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px;">
-        
-        <button id="gerarPixBtn">Gerar Pix</button>
-        
-        <div id="mensagem"></div>
-        <div id="qrCodeContainer"></div>
-        
-        <div class="codigo-container" id="codigoPix">
-            <span><strong></strong></span>
-        </div>
+    </div>
 
-        <div id="statusPagamento"></div>
-        <div id="verificado"></div> </div>
+    <div class="container">
+        <h1 class="valor-title">Whatsapp Pay</h1>
 
-    <script>
-        // *** ATENÇÃO: Use a mesma chave de API para ambas as chamadas (gerar e verificar) ***
-        // É ALTAMENTE RECOMENDADO que você mova esta chave para um BACKEND SEGURO
-        const PUSHINPAY_API_KEY = "32159|aepREDAQBJlksHCuLQ4XPD6GzJhQUlMXW7ACWfTM964d258a"; 
+       <h2 style="color: #007BFF; text-align: center; font-size: 24px; margin-top: 20px;">⚡️ Processo de Pagamento Pix (Rápido)</h2>
+<ol style="list-style: none; padding: 0; text-align: left; margin-top: 15px;">
+    <li style="margin-bottom: 10px; padding: 10px; background-color: #f0f8ff; border-radius: 5px; color: #333;">
+        <strong style="color: #007BFF;">1️⃣ Digite o Valor:</strong> Insira o montante desejado e clique no botão <strong style="color: #0056b3;">"Gerar Pix"</strong>.
+    </li>
+    <li style="margin-bottom: 10px; padding: 10px; background-color: #f0f8ff; border-radius: 5px; color: #333;">
+        <strong style="color: #FFA500;">2️⃣ Copiar ou Ler:</strong> Use o <strong>QR Code</strong> ou clique no botão verde para <strong>Copiar</strong> o código Pix.
+    </li>
+    <li style="margin-bottom: 10px; padding: 10px; background-color: #f0f8ff; border-radius: 5px; color: #333;">
+        <strong style="color: #28a745;">3️⃣ Pagar e Acessar:</strong> Pague em seu banco. A confirmação é imediata para liberar o botão <strong style="color: #1e7e34;">"Acesso Liberado"</strong>.
+    </li>
+</ol>
+        
+        <label for="valorInput">Valor:</label>
+        <input type="text" id="valorInput" placeholder="Digite o Valor" style="width: 100%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 5px;">
+        
+        <button id="gerarPixBtn">Gerar Pix</button>
+        
+        <div id="mensagem"></div>
+        <div id="qrCodeContainer"></div>
+        
+        <div class="codigo-container" id="codigoPix">
+            <span><strong></strong></span>
+        </div>
 
-        const enviarMensagem = (mensagem) => {
-            const mensagemDiv = document.getElementById('mensagem');
-            mensagemDiv.innerHTML = `<p>${mensagem}</p>`; // Substitui a mensagem existente
-        };
+        <div id="statusPagamento"></div>
+        <div id="verificado"></div> </div>
 
-        const formatarValor = (valor) => {
-            return valor.replace(',', '.').replace(/[^\d.]/g, '');
-        };
+    <script>
+        // *** ATENÇÃO: Use a mesma chave de API para ambas as chamadas (gerar e verificar) ***
+        // É ALTAMENTE RECOMENDADO que você mova esta chave para um BACKEND SEGURO
+        const PUSHINPAY_API_KEY = "32159|aepREDAQBJlksHCuLQ4XPD6GzJhQUlMXW7ACWfTM964d258a"; 
 
-        let intervalId = null; // Variável para controlar o intervalo de verificação
+        const enviarMensagem = (mensagem) => {
+            const mensagemDiv = document.getElementById('mensagem');
+            mensagemDiv.innerHTML = `<p>${mensagem}</p>`; // Substitui a mensagem existente
+        };
 
-        const gerarPix = async () => {
-            let valor = formatarValor(document.getElementById('valorInput').value);
-            valor = parseFloat(valor).toFixed(2); // Garante 2 casas decimais
+        const formatarValor = (valor) => {
+            return valor.replace(',', '.').replace(/[^\d.]/g, '');
+        };
 
-            if (isNaN(valor) || valor <= 0) {
-                enviarMensagem("Por favor, insira um valor válido.");
-                return;
-            }
+        let intervalId = null; // Variável para controlar o intervalo de verificação
 
-            // Limpa mensagens e QR Code, status e botão de acesso liberado
-            document.getElementById('mensagem').innerHTML = '';
-            document.getElementById('qrCodeContainer').innerHTML = '';
-            document.getElementById('statusPagamento').innerHTML = '';
-            document.getElementById('verificado').innerHTML = '';
-            document.getElementById('codigoPix').querySelector("strong").innerText = "";
-            const botaoCopiarExistente = document.getElementById('codigoPix').querySelector(".botaoCopiar");
-            if (botaoCopiarExistente) {
-                botaoCopiarExistente.remove();
-            }
+        const gerarPix = async () => {
+            let valor = formatarValor(document.getElementById('valorInput').value);
+            valor = parseFloat(valor).toFixed(2); // Garante 2 casas decimais
 
-            // Garante que qualquer verificação anterior seja parada
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
+            if (isNaN(valor) || valor <= 0) {
+                enviarMensagem("Por favor, insira um valor válido.");
+                return;
+            }
 
-            const valorEmCentavos = Math.round(valor * 100);
+            // Limpa mensagens e QR Code, status e botão de acesso liberado
+            document.getElementById('mensagem').innerHTML = '';
+            document.getElementById('qrCodeContainer').innerHTML = '';
+            document.getElementById('statusPagamento').innerHTML = '';
+            document.getElementById('verificado').innerHTML = '';
+            document.getElementById('codigoPix').querySelector("strong").innerText = "";
+            const botaoCopiarExistente = document.getElementById('codigoPix').querySelector(".botaoCopiar");
+            if (botaoCopiarExistente) {
+                botaoCopiarExistente.remove();
+            }
 
-            try {
-                const response = await fetch("https://api.pushinpay.com.br/api/pix/cashIn", {
-                    method: "POST",
-                    headers: {
-                        "Authorization": `Bearer ${PUSHINPAY_API_KEY}`,
-                        "Accept": "application/json",
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        "value": valorEmCentavos,
-                        "webhook_url": "http://seuservico.com/webhook" // Substitua pelo seu webhook real
-                    })
-                });
+            // Garante que qualquer verificação anterior seja parada
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
 
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log("String Base64 do QR Code da API:", data.qr_code_base64); // MUITO IMPORTANTE PARA DEPURAR!
-                    apresentarQRCode(data.qr_code_base64);
-                    apresentarCodigoCopiaCola(data.qr_code);
-                    verificarPagamento(data.id); // Inicia a verificação de pagamento
-                } else {
-                    const errorData = await response.json();
-                    enviarMensagem(`Erro ao gerar PIX: ${response.status} - ${errorData.message || response.statusText}`);
-                }
-            } catch (error) {
-                enviarMensagem(`Erro de rede ou servidor: ${error.message}`);
-            }
-        };
+            const valorEmCentavos = Math.round(valor * 100);
 
-        const apresentarQRCode = (qrCodeBase64) => {
-            const imgQrCode = document.createElement("img");
-            
-            // VERIFICA SE A STRING BASE64 JÁ CONTÉM O PREFIXO
-            // Se sim, usa como está. Se não, assume que é PNG e adiciona o prefixo.
-            if (qrCodeBase64.startsWith("data:image/")) {
-                imgQrCode.src = qrCodeBase64;
-            } else {
-                imgQrCode.src = `data:image/png;base64,${qrCodeBase64}`; 
-            }
-            
-            imgQrCode.alt = "QR Code Pix";
-            imgQrCode.style.maxWidth = "150px"; // Tamanho ajustado para 150px
-            const qrCodeContainer = document.getElementById('qrCodeContainer');
-            qrCodeContainer.innerHTML = "";
-            qrCodeContainer.appendChild(imgQrCode);
-        };
+            try {
+                const response = await fetch("https://api.pushinpay.com.br/api/pix/cashIn", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${PUSHINPAY_API_KEY}`,
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        "value": valorEmCentavos,
+                        "webhook_url": "http://seuservico.com/webhook" // Substitua pelo seu webhook real
+                    })
+                });
 
-        const apresentarCodigoCopiaCola = (codigo) => {
-            const codigoDiv = document.getElementById('codigoPix');
-            codigoDiv.querySelector("strong").innerText = codigo;
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log("String Base64 do QR Code da API:", data.qr_code_base64); // MUITO IMPORTANTE PARA DEPURAR!
+                    apresentarQRCode(data.qr_code_base64);
+                    apresentarCodigoCopiaCola(data.qr_code);
+                    verificarPagamento(data.id); // Inicia a verificação de pagamento
+                } else {
+                    const errorData = await response.json();
+                    enviarMensagem(`Erro ao gerar PIX: ${response.status} - ${errorData.message || response.statusText}`);
+                }
+            } catch (error) {
+                enviarMensagem(`Erro de rede ou servidor: ${error.message}`);
+            }
+        };
 
-            const botaoExistente = codigoDiv.querySelector(".botaoCopiar");
-            if (botaoExistente) {
-                botaoExistente.remove();
-            }
+        const apresentarQRCode = (qrCodeBase64) => {
+            const imgQrCode = document.createElement("img");
+            
+            // VERIFICA SE A STRING BASE64 JÁ CONTÉM O PREFIXO
+            // Se sim, usa como está. Se não, assume que é PNG e adiciona o prefixo.
+            if (qrCodeBase64.startsWith("data:image/")) {
+                imgQrCode.src = qrCodeBase64;
+            } else {
+                imgQrCode.src = `data:image/png;base64,${qrCodeBase64}`; 
+            }
+            
+            imgQrCode.alt = "QR Code Pix";
+            imgQrCode.style.maxWidth = "150px"; // Tamanho ajustado para 150px
+            const qrCodeContainer = document.getElementById('qrCodeContainer');
+            qrCodeContainer.innerHTML = "";
+            qrCodeContainer.appendChild(imgQrCode);
+        };
 
-            const botaoCopiar = document.createElement("button");
-            botaoCopiar.className = "botaoCopiar";
-            botaoCopiar.innerText = "Copiar Código Pix";
-            botaoCopiar.onclick = () => {
-                copiarCodigo(codigo);
-            };
-            codigoDiv.appendChild(botaoCopiar);
-        };
+        const apresentarCodigoCopiaCola = (codigo) => {
+            const codigoDiv = document.getElementById('codigoPix');
+            codigoDiv.querySelector("strong").innerText = codigo;
 
-        const copiarCodigo = async (codigo) => {
-            try {
-                await navigator.clipboard.writeText(codigo);
-                enviarMensagem("PUSHIN PAY – Código copiado com sucesso!");
-                // A verificação de pagamento já lida com o pop-up de carregamento
-            } catch (err) {
-                enviarMensagem("Erro ao copiar o código.");
-                console.error('Erro ao copiar: ', err);
-            }
-        };
+            const botaoExistente = codigoDiv.querySelector(".botaoCopiar");
+            if (botaoExistente) {
+                botaoExistente.remove();
+            }
 
-        const verificarPagamento = (idTransacao) => {
-            const statusDiv = document.getElementById('statusPagamento');
+            const botaoCopiar = document.createElement("button");
+            botaoCopiar.className = "botaoCopiar";
+            botaoCopiar.innerText = "Copiar Código Pix";
+            botaoCopiar.onclick = () => {
+                copiarCodigo(codigo);
+            };
+            codigoDiv.appendChild(botaoCopiar);
+        };
 
-            statusDiv.innerHTML = "Aguardando pagamento...";
-            statusDiv.style.color = "#ffc107"; // Cor amarela para status pendente
-            
-            // Garante que qualquer intervalo anterior seja parado
-            if (intervalId) {
-                clearInterval(intervalId);
-            }
+        const copiarCodigo = async (codigo) => {
+            try {
+                await navigator.clipboard.writeText(codigo);
+                enviarMensagem("PUSHIN PAY – Código copiado com sucesso!");
+                // A verificação de pagamento já lida com o pop-up de carregamento
+            } catch (err) {
+                enviarMensagem("Erro ao copiar o código.");
+                console.error('Erro ao copiar: ', err);
+            }
+        };
 
-            intervalId = setInterval(async () => {
-                try {
-                    const response = await fetch(`https://api.pushinpay.com.br/api/transactions/${idTransacao}`, {
-                        method: "GET",
-                        headers: {
-                            "Authorization": `Bearer ${PUSHINPAY_API_KEY}`,
-                            "Accept": "application/json",
-                            "Content-Type": "application/json"
-                        }
-                    });
+        const verificarPagamento = (idTransacao) => {
+            const statusDiv = document.getElementById('statusPagamento');
 
-                    if (response.ok) {
-                        const data = await response.json();
-                        console.log("Status da Transação:", data.status); // Para depuração
+            statusDiv.innerHTML = "Aguardando pagamento...";
+            statusDiv.style.color = "#ffc107"; // Cor amarela para status pendente
+            
+            // Garante que qualquer intervalo anterior seja parado
+            if (intervalId) {
+                clearInterval(intervalId);
+            }
 
-                        if (data.status === "paid") {
-                            const qrCodeContainer = document.getElementById('qrCodeContainer');
-                            const mensagemDiv = document.getElementById('mensagem');
-                            const codigoDiv = document.getElementById('codigoPix');
-                            const verificadoDiv = document.getElementById('verificado');
+            intervalId = setInterval(async () => {
+                try {
+                    const response = await fetch(`https://api.pushinpay.com.br/api/transactions/${idTransacao}`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${PUSHINPAY_API_KEY}`,
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        }
+                    });
 
-                            // Remove todas as informações de pagamento
-                            qrCodeContainer.innerHTML = "";
-                            mensagemDiv.innerHTML = "";
-                            codigoDiv.querySelector("strong").innerText = ""; 
-                            const botaoCopiar = codigoDiv.querySelector(".botaoCopiar");
-                            if (botaoCopiar) {
-                                botaoCopiar.remove();
-                            }
-                            
-                            statusDiv.innerHTML = "Pagamento aprovado!";
-                            statusDiv.style.color = "#28a745"; // Verde para aprovado
+                    if (response.ok) {
+                        const data = await response.json();
+                        console.log("Status da Transação:", data.status); // Para depuração
 
-                            verificadoDiv.innerHTML = '<img src="https://i.postimg.cc/pdYrVCBT/canva.png" alt="Pagamento Verificado" style="max-width: 150px;"/>';
+                        if (data.status === "paid") {
+                            const qrCodeContainer = document.getElementById('qrCodeContainer');
+                            const mensagemDiv = document.getElementById('mensagem');
+                            const codigoDiv = document.getElementById('codigoPix');
+                            const verificadoDiv = document.getElementById('verificado');
 
-                            // Adiciona o botão de "Acesso Liberado"
-                            const botaoLiberado = document.createElement("button");
-                            botaoLiberado.className = "botaoLiberado";
-                            botaoLiberado.innerText = "Acesso Liberado";
-                            botaoLiberado.onclick = () => {
-                                window.location.href = "https://api.whatsapp.com/send/"; // Substitua pelo link do produto/destino
-                            };
-                            verificadoDiv.appendChild(botaoLiberado);
+                            // Remove todas as informações de pagamento
+                            qrCodeContainer.innerHTML = "";
+                            mensagemDiv.innerHTML = "";
+                            codigoDiv.querySelector("strong").innerText = ""; 
+                            const botaoCopiar = codigoDiv.querySelector(".botaoCopiar");
+                            if (botaoCopiar) {
+                                botaoCopiar.remove();
+                            }
+                            
+                            statusDiv.innerHTML = "Pagamento aprovado!";
+                            statusDiv.style.color = "#28a745"; // Verde para aprovado
 
-                            clearInterval(intervalId);
-                        } else if (data.status === "pending") {
-                            statusDiv.innerHTML = "Aguardando pagamento...";
-                            statusDiv.style.color = "#ffc107"; // Amarelo para pendente
-                        } else if (data.status === "cancelled" || data.status === "expired") {
-                             statusDiv.innerHTML = `Pagamento ${data.status === "cancelled" ? "cancelado" : "expirado"}. Por favor, gere um novo Pix.`;
-                             statusDiv.style.color = "#dc3545"; // Vermelho para cancelado/expirado
-                             clearInterval(intervalId); // Para de verificar
-                        }
-                    } else {
-                        const errorData = await response.json();
-                        enviarMensagem(`Erro ao verificar pagamento: ${response.status} - ${errorData.message || response.statusText}`);
-                        clearInterval(intervalId); // Para de verificar
-                    }
-                } catch (error) {
-                    enviarMensagem(`Erro na verificação de pagamento: ${error.message}`);
-                    clearInterval(intervalId); // Para de verificar
-                }
-            }, 5000); // Verifica a cada 5 segundos
-        };
+                            verificadoDiv.innerHTML = '<img src="https://i.postimg.cc/pdYrVCBT/canva.png" alt="Pagamento Verificado" style="max-width: 150px;"/>';
 
-        document.getElementById('gerarPixBtn').onclick = gerarPix;
-    </script>
-    
+                            // Adiciona o botão de "Acesso Liberado"
+                            const botaoLiberado = document.createElement("button");
+                            botaoLiberado.className = "botaoLiberado";
+                            botaoLiberado.innerText = "Acesso Liberado";
+                            botaoLiberado.onclick = () => {
+                                window.location.href = "https://api.whatsapp.com/send/"; // Substitua pelo link do produto/destino
+                            };
+                            verificadoDiv.appendChild(botaoLiberado);
+
+                            clearInterval(intervalId);
+                        } else if (data.status === "pending") {
+                            statusDiv.innerHTML = "Aguardando pagamento...";
+                            statusDiv.style.color = "#ffc107"; // Amarelo para pendente
+                        } else if (data.status === "cancelled" || data.status === "expired") {
+                             statusDiv.innerHTML = `Pagamento ${data.status === "cancelled" ? "cancelado" : "expirado"}. Por favor, gere um novo Pix.`;
+                             statusDiv.style.color = "#dc3545"; // Vermelho para cancelado/expirado
+                             clearInterval(intervalId); // Para de verificar
+                        }
+                    } else {
+                        const errorData = await response.json();
+                        enviarMensagem(`Erro ao verificar pagamento: ${response.status} - ${errorData.message || response.statusText}`);
+                        clearInterval(intervalId); // Para de verificar
+                    }
+                } catch (error) {
+                    enviarMensagem(`Erro na verificação de pagamento: ${error.message}`);
+                    clearInterval(intervalId); // Para de verificar
+                }
+            }, 5000); // Verifica a cada 5 segundos
+        };
+
+        document.getElementById('gerarPixBtn').onclick = gerarPix;
+    </script>
+    
 </body>
 </html>
